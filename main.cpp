@@ -3,6 +3,14 @@
 #include <string>
 #include <fstream>
 
+#ifndef EXIT_FAILURE
+#define EXIT_FAILURE 1
+#endif
+
+#ifndef EXIT_SUCCESS
+#define EXIT_SUCCESS 0
+#endif
+
 int main(int argc, char **argv) {
     if(argc == 1) {
         std::cerr << "Usage: --file filename --file filename [--print_length]" << std::endl;
