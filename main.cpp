@@ -2,6 +2,7 @@
 #include "distance_calc.hpp"
 #include <string>
 #include <fstream>
+#include <vector>
 
 #ifndef EXIT_FAILURE
 #define EXIT_FAILURE 1
@@ -56,18 +57,21 @@ int main(int argc, char **argv) {
         }
         return EXIT_FAILURE;
     }
-    using it = std::istreambuf_iterator<char>;
+    std::vector<char> file1_buffer((std::istreambuf_iterator<char>(file1)), (std::istreambuf_iterator<char>()));
+    std::vector<char> file2_buffer((std::istreambuf_iterator<char>(file2)), (std::istreambuf_iterator<char>()));
+    auto file1_size = std::distance(file1_buffer.begin(), file1_buffer.end());
+    auto file2_size = std::distance(file2_buffer.begin(), file2_buffer.end());
+    if(file1_size != file2_size) {
+        std::cerr << "Files should have the same size." << std::endl;
+        return EXIT_FAILURE;
+    }
     std::cout << "### Bit humming distance between " << file1_name << " and " << file2_name << " ###" << std::endl;
-    std::cout << calculate_distance(it(file1), it(), it(file2), it()) << std::endl;
+    std::cout << calculate_distance(file1_buffer.begin(), file1_buffer.end(), file2_buffer.begin(), file2_buffer.end()) << std::endl;
     if(print_file_lenght) {
-        file1.clear();
-        file1.seekg(0, std::ios::beg);
         std::cout << "### File " << file1_name << " length ###" << std::endl;
-        std::cout << std::distance(it(file1), it()) << std::endl;
-        file2.clear();
-        file2.seekg(0, std::ios::beg);
+        std::cout << file1_size << std::endl;
         std::cout << "### File " << file2_name << " length ###" << std::endl;
-        std::cout << std::distance(it(file2), it()) << std::endl;
+        std::cout << file2_size << std::endl;
     }
     return EXIT_SUCCESS;
 }
